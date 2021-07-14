@@ -44,6 +44,7 @@ private:
 	std::chrono::microseconds AL_time;
 	const double quantum = 4.0f;
 	ofxOscSender oscSend;
+
 	ofxOscReceiver oscRec;
 
 };

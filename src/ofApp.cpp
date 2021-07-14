@@ -30,7 +30,9 @@ void ofApp::update(){
 		}
 	}
 
-	while (launchers.size() != 0)
+	const auto phase = state.link.captureAppSessionState().phaseAtTime(AL_time, quantum);
+
+	while (launchers.size() != 0 && phase < 0.06)
 	{
 		std::stringstream ss;
 		ss << "/composition/columns/" << launchers.back().getColumnToLaunch() << "/connect";
