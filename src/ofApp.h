@@ -35,7 +35,8 @@ public:
 
 private:
 	std::vector<resolumeClipLaunch> launchers;
-	size_t resClipOffset = 8;
+	size_t resClipOffset = 7;
+	size_t currColumn = 1;
 	float speedVal = 0.1f;
 	float toSendValue = 0.0f;
 	float oldSendValue = toSendValue;

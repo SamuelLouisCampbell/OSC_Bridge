@@ -34,6 +34,7 @@ void ofApp::update(){
 	{
 		std::stringstream ss;
 		ss << "/composition/columns/" << launchers.back().getColumnToLaunch() << "/connect";
+		currColumn = launchers.back().getColumnToLaunch();
 		ofxOscMessage m;
 		m.setAddress(ss.str());
 		m.addFloatArg(1.0f);
@@ -55,50 +56,47 @@ void ofApp::draw(){
 	//convert bpm to "SPEED" 
 
 	float convertMe = ofMap(tempo,60.0f,240.0f, 0.05f, 0.2f);
-	
+	float floatBPM = ofMap(tempo, 20.0f, 500.0f, 0.0f, 1.0f);
 	float toSendValue = std::pow(convertMe, 1.0f / 1.6609640474437f);
 	
 	
-	ss << std::endl << "BPM  : " << tempo
+	ss  << "CONNECTIONS : " << state.link.numPeers()
+		<< std::endl << "BPM  : " << tempo
 		<< std::endl << "BEATS : " << beats
 		<< std::endl << "PHASE : " << i_phase
 		<< std::endl << "LOCAL SPEED VALUE : " << convertMe
-		<< std::endl << "Time TO SEND VIA OSC : " << toSendValue;
+		<< std::endl << "Time TO SEND VIA OSC : " << toSendValue
+		<< std::endl << "Current Column : " << currColumn;	
 
 
 
 	if (oldSendValue != toSendValue)
 	{
+		//send speed
 		ofxOscMessage m;
 		m.setAddress("/composition/speed");
 		m.addFloatArg(toSendValue);
 		oscSend.sendMessage(m);
 		oldSendValue = toSendValue;
+		//send tempo
+		ofxOscMessage n;
+		n.setAddress("/composition/tempocontroller/tempo");
+		n.addFloatArg(floatBPM);
+		oscSend.sendMessage(n);
 	}
 	
 	
 	ofSetColor(255, 56, 0);
 	
-
+	//display rectangles
 	ofDrawRectangle({ 100 + (30.0f * i_phase) , 200.0f }, 20.0f, 20.0f);
-
-
 	ofSetColor(0, 255, 128);
-
+	//draw info
 	ofDrawBitmapString( ss.str(), 100.0f, 100.0f);
 }
 
 void ofApp::keyPressed(int key)
 {
-	//if (key == 'a' || key == 'A')
-	//{
-	//	speedVal += 0.001f;
-	//}
-	//if (key == 's' || key == 'S')
-	//{
-	//	speedVal -= 0.001f;
-	//}
-
 }
 
 resolumeClipLaunch::resolumeClipLaunch(int colToLaunch, const int startOffset)
@@ -110,5 +108,5 @@ resolumeClipLaunch::resolumeClipLaunch(int colToLaunch, const int startOffset)
 
 const int resolumeClipLaunch::getColumnToLaunch() const
 {
-	return columnToLaunch * startOffset;
+	return (columnToLaunch * startOffset) + 1;
 }
