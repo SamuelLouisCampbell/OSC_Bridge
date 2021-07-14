@@ -6,12 +6,41 @@ void ofApp::setup(){
 	state.link.enable(true);
 	std::cout << "State setup" << std::endl;
 	oscSend.setup("127.0.0.1", 8000);
+	oscRec.setup(7000);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 	//update Ableton Link
 	AL_time = state.link.clock().micros();
+
+	while (oscRec.hasWaitingMessages())
+	{
+		//Get the next message;
+		ofxOscMessage m;
+		oscRec.getNextMessage(&m);
+		std::string s = m.getAddress();
+
+		if (s.substr(0, 4) == "/cue")
+		{
+			std::stringstream ss;
+			ss << "/cue/" << m.getArgAsInt(0) << " : detected." << std::endl;
+			std::cout << ss.str();
+			launchers.emplace_back(m.getArgAsInt(0) - 1, resClipOffset);
+		}
+	}
+
+	while (launchers.size() != 0)
+	{
+		std::stringstream ss;
+		ss << "/composition/columns/" << launchers.back().getColumnToLaunch() << "/connect";
+		ofxOscMessage m;
+		m.setAddress(ss.str());
+		m.addFloatArg(1.0f);
+		oscSend.sendMessage(m);
+		launchers.pop_back();
+	}
+	
 }
 
 //--------------------------------------------------------------
@@ -72,3 +101,14 @@ void ofApp::keyPressed(int key)
 
 }
 
+resolumeClipLaunch::resolumeClipLaunch(int colToLaunch, const int startOffset)
+	:
+	columnToLaunch(colToLaunch),
+	startOffset(startOffset)
+{
+}
+
+const int resolumeClipLaunch::getColumnToLaunch() const
+{
+	return columnToLaunch * startOffset;
+}
