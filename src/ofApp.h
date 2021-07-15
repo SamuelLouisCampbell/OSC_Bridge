@@ -3,16 +3,9 @@
 #include "ofMain.h"
 #include <Link.hpp>
 #include "ofxOsc.h"
+#include "ResolumeState.h"
 
-class resolumeClipLaunch
-{
-public:
-	resolumeClipLaunch(int colToLaunch, const int startOffset);
-	const int getColumnToLaunch() const;
-private:
-	int columnToLaunch;
-	int startOffset;
-};
+
 
 class ofApp : public ofBaseApp{
 private:
@@ -33,18 +26,26 @@ public:
 	void draw();
 	void keyPressed(int key);
 
+
 private:
-	std::vector<resolumeClipLaunch> launchers;
-	size_t resClipOffset = 7;
-	size_t currColumn = 1;
+
+//ableton stuff
+	float phase;
+	float tempo;
+
+//res stuff
+	ResolumeState resState;
+
+//Timing stuff
 	float speedVal = 0.1f;
 	float toSendValue = 0.0f;
 	float oldSendValue = toSendValue;
+
 	State state;
 	std::chrono::microseconds AL_time;
 	const double quantum = 4.0f;
 	ofxOscSender oscSend;
-
+	ofxOscSender oscSendTouch;
 	ofxOscReceiver oscRec;
 
 };
