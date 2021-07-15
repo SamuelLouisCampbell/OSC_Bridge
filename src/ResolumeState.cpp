@@ -23,6 +23,22 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv)
 			std::cout << ss.str();
 			nextSet = m.getArgAsInt(0);
 		}
+		else if (s == "/go")
+		{
+			std::stringstream ss;
+			ss << "/go : detected." << std::endl;
+			std::cout << ss.str();
+
+			if (nextCue < nCues)
+			{
+				nextCue++;
+			}
+			else
+			{
+				nextCue = 1;
+			}
+		}
+
 	}
 }
 

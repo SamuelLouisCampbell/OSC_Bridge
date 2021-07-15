@@ -23,6 +23,7 @@ private:
 	size_t nextCue = 1;
 					 
 	size_t offset = 7;
+	size_t nCues = 5;
 
 	float oldTempo = 128.0f;
 	float tempo = 128.0f;
