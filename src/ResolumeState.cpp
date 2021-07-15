@@ -29,44 +29,47 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv)
 void ResolumeState::sendOutputMessages(ofxOscSender& send)
 {
 	//decide which column to launch based on current data.
-	if (currentSet != nextSet)
+	if (phase < 0.0625f)
 	{
-		//Clip Set Changed. 
-		//reset cues to 1 :: prebreak
-		nextCue = 1; 
-		currentCue = 1;
+		if (currentSet != nextSet)
+		{
+			//Clip Set Changed. 
+			//reset cues to 1 :: prebreak
+			nextCue = 1;
+			currentCue = 1;
 
-		//update current set
-		currentSet = nextSet;
+			//update current set
+			currentSet = nextSet;
 
-		//update actual column index
-		currentCol = (currentSet * offset + (currentCue - 1)) - (offset - 1);
+			//update actual column index
+			currentCol = (currentSet * offset + (currentCue - 1)) - (offset - 1);
 
-		//send that to RES
-		std::stringstream ss;
-		ss << "/composition/columns/" << currentCol << "/connect";
-		ofxOscMessage m;
-		m.setAddress(ss.str());
-		m.addFloatArg(1.0f);
-		send.sendMessage(m);
-		std::cout << ss.str() << std::endl;
-	}
-	if (currentCue != nextCue)
-	{
-		//cue updated
-		currentCue = nextCue;
-		//update actual column index
-		currentCol = (currentSet * offset + (currentCue - 1)) - (offset - 1);
+			//send that to RES
+			std::stringstream ss;
+			ss << "/composition/columns/" << currentCol << "/connect";
+			ofxOscMessage m;
+			m.setAddress(ss.str());
+			m.addFloatArg(1.0f);
+			send.sendMessage(m);
+			std::cout << ss.str() << std::endl;
+		}
+		if (currentCue != nextCue)
+		{
+			//cue updated
+			currentCue = nextCue;
+			//update actual column index
+			currentCol = (currentSet * offset + (currentCue - 1)) - (offset - 1);
 
-		//send that to RES
-		std::stringstream ss;
-		ss << "/composition/columns/" << currentCol << "/connect";
-		ofxOscMessage m;
-		m.setAddress(ss.str());
-		m.addFloatArg(1.0f);
-		send.sendMessage(m);
-		std::cout << ss.str() << std::endl;
+			//send that to RES
+			std::stringstream ss;
+			ss << "/composition/columns/" << currentCol << "/connect";
+			ofxOscMessage m;
+			m.setAddress(ss.str());
+			m.addFloatArg(1.0f);
+			send.sendMessage(m);
+			std::cout << ss.str() << std::endl;
 
+		}
 	}
 
 	if (oldTempo != tempo)
@@ -85,13 +88,6 @@ void ResolumeState::sendOutputMessages(ofxOscSender& send)
 		t.addFloatArg(floatBPM);
 		send.sendMessage(t);
 	}
-	/*std::stringstream ss;
-	ss << "/composition/columns/" << launchers.back().getColumnToLaunch() << "/connect";
-	currentColumn = launchers.back().getColumnToLaunch();
-	ofxOscMessage m;
-	m.setAddress(ss.str());
-	m.addFloatArg(1.0f);
-	send.sendMessage(m);*/
 }
 
 void ResolumeState::updateTempoSpeedPhase(const float bpm, const float _phase)
@@ -102,8 +98,6 @@ void ResolumeState::updateTempoSpeedPhase(const float bpm, const float _phase)
 	float convertMe = ofMap(tempo, contentTargetBPM / 2.0f, contentTargetBPM * 2.0f, 0.05f, 0.2f);
 	floatBPM = ofMap(tempo, 20.0f, 500.0f, 0.0f, 1.0f);
 	toSendValue = std::pow(convertMe, 1.0f / 1.6609640474437f);
-	
-	
 }
 
 const size_t ResolumeState::getCurSet()
