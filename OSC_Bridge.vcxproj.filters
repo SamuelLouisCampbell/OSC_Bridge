@@ -82,6 +82,9 @@
     <ClCompile Include="src\ResolumeState.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="TouchState.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -243,6 +246,9 @@
       <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
     </ClInclude>
     <ClInclude Include="src\ResolumeState.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="TouchState.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

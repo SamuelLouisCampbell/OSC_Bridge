@@ -4,7 +4,7 @@
 #include <Link.hpp>
 #include "ofxOsc.h"
 #include "ResolumeState.h"
-
+#include "../TouchState.h"
 
 
 class ofApp : public ofBaseApp{
@@ -36,16 +36,22 @@ private:
 //res stuff
 	ResolumeState resState;
 
+//touch OSC stuff
+	TouchState touchState;
+
 //Timing stuff
 	float speedVal = 0.1f;
 	float toSendValue = 0.0f;
 	float oldSendValue = toSendValue;
 
 	State state;
+
 	std::chrono::microseconds AL_time;
 	const double quantum = 4.0f;
-	ofxOscSender oscSend;
+	ofxOscSender oscSendRes;
 	ofxOscSender oscSendTouch;
-	ofxOscReceiver oscRec;
+	ofxOscReceiver oscRecTouch;
+	ofxOscReceiver oscRecRes;
+
 
 };

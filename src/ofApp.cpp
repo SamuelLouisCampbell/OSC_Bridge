@@ -5,9 +5,10 @@ void ofApp::setup(){
 	//Setup Ableton Link
 	state.link.enable(true);
 	std::cout << "State setup" << std::endl;
-	oscSend.setup("127.0.0.1", 8000);
-	oscRec.setup(7000);
+	oscSendRes.setup("127.0.0.1", 8000);
+	oscRecRes.setup(8001);
 	oscSendTouch.setup("127.0.0.1", 7001);
+	oscRecTouch.setup(7000);
 }
 
 //--------------------------------------------------------------
@@ -18,11 +19,10 @@ void ofApp::update(){
 	tempo = state.link.captureAppSessionState().tempo();
 
 	resState.updateTempoSpeedPhase(tempo, phase);
-	resState.updateInputMessages(oscRec);
-	resState.sendOutputMessages(oscSend);
+	resState.updateInputMessages(oscRecTouch);
+	resState.sendOutputMessages(oscSendRes);
+	touchState.updateInputMessages(oscRecRes);
 
-	
-	
 }
 
 //--------------------------------------------------------------
@@ -38,14 +38,9 @@ void ofApp::draw(){
 		<< std::endl << "Current Column : " << resState.getCurCol()
 		<< std::endl << "Current Set : " << resState.getCurSet()
 		<< std::endl << "Current Cue : " << resState.getCurCue();
-
-
-
-
 	
-	
+
 	ofSetColor(255, 56, 0);
-	
 	//display rectangles
 	ofDrawRectangle({ 100 + (30.0f * i_phase) , 250.0f }, 20.0f, 20.0f);
 	ofSetColor(0, 255, 128);
