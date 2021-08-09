@@ -15,6 +15,8 @@ public:
 	void setOffset(const int _offset);
 
 private:
+	const bool killContent();
+private:
 	size_t currentSet = 1;
 	size_t currentCue = 1;
 	size_t currentCol = 1;
@@ -25,6 +27,7 @@ private:
 	size_t offset = 7;
 	size_t nCues = 5;
 
+	int numContentLayers = 4;
 	float oldTempo = 128.0f;
 	float tempo = 128.0f;
 	float phase = 0.0f;
@@ -32,6 +35,7 @@ private:
 	float toSendValue = 0.0f;
 	float floatBPM = 0.0f;
 	float contentTargetBPM = 120.0f;
+	bool killContentLayers = false;
 
 };
 

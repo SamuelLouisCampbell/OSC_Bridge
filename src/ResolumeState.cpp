@@ -38,6 +38,13 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv)
 				nextCue = 1;
 			}
 		}
+		else if (s == "/kill")
+		{
+			std::stringstream ss;
+			ss << "/kill : detected." << std::endl;
+			std::cout << ss.str();
+			killContentLayers = true;
+		}
 
 	}
 }
@@ -104,6 +111,29 @@ void ResolumeState::sendOutputMessages(ofxOscSender& send)
 		t.addFloatArg(floatBPM);
 		send.sendMessage(t);
 	}
+
+	if (killContentLayers)
+	{
+		for(int i = 1; i <= numContentLayers; i++)
+		{
+			std::stringstream ss; 
+			ss << "/composition/layers/" << i << "/clear";
+			ofxOscMessage s;
+			s.setAddress(ss.str());
+			s.addIntArg(1);
+			send.sendMessage(s);
+		}
+		for (int i = 1; i <= numContentLayers; i++)
+		{
+			std::stringstream ss;
+			ss << "/composition/layers/" << i << "/clear";
+			ofxOscMessage s;
+			s.setAddress(ss.str());
+			s.addIntArg(0);
+			send.sendMessage(s);
+		}
+		killContent();
+	}
 }
 
 void ResolumeState::updateTempoSpeedPhase(const float bpm, const float _phase)
@@ -129,6 +159,13 @@ const size_t ResolumeState::getCurCue()
 const size_t ResolumeState::getCurCol()
 {
 	return currentCol;
+}
+
+const bool ResolumeState::killContent()
+{
+	bool temp = killContentLayers;
+	killContentLayers = false;
+	return temp;
 }
 
 void ResolumeState::setOffset(const int _offset)

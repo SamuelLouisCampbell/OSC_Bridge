@@ -23,4 +23,28 @@ void TouchState::updateInputMessages(ofxOscReceiver& recv)
 
 void TouchState::sendOutputMessages(ofxOscSender& send)
 {
+	//flipflop
+	if (oldTempo != tempo)
+	{
+		oldTempo = tempo;
+		////send speed
+		//ofxOscMessage s;
+		//s.setAddress("/composition/speed");
+		//s.addFloatArg(toSendValue);
+		//send.sendMessage(s);
+
+		//send tempo
+		std::stringstream ss;
+		ss << "BPM : " << std::setprecision(5) << tempo;
+		ofxOscMessage t;
+		t.setAddress("/tempo");
+		t.addStringArg(ss.str());
+		send.sendMessage(t);
+	}
+}
+
+void TouchState::updateTempoSpeedPhase(const float bpm, const float _phase)
+{
+	tempo = bpm;
+	phase = _phase;
 }

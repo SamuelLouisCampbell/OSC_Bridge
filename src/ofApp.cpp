@@ -18,10 +18,14 @@ void ofApp::update(){
 	phase = state.link.captureAppSessionState().phaseAtTime(AL_time, quantum);
 	tempo = state.link.captureAppSessionState().tempo();
 
+	//update res state
 	resState.updateTempoSpeedPhase(tempo, phase);
 	resState.updateInputMessages(oscRecTouch);
 	resState.sendOutputMessages(oscSendRes);
+	//update touch state
+	touchState.updateTempoSpeedPhase(tempo, phase);
 	touchState.updateInputMessages(oscRecRes);
+	touchState.sendOutputMessages(oscSendTouch);
 
 }
 
