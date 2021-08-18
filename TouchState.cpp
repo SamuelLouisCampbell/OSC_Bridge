@@ -27,7 +27,6 @@ void TouchState::sendOutputMessages(ofxOscSender& send)
 	if (oldTempo != tempo)
 	{
 		oldTempo = tempo;
-
 		//send tempo
 		std::stringstream ss;
 		ss << "BPM : " << std::setprecision(5) << tempo;
@@ -35,6 +34,18 @@ void TouchState::sendOutputMessages(ofxOscSender& send)
 		t.setAddress("/tempo");
 		t.addStringArg(ss.str());
 		send.sendMessage(t);
+	}
+	if (oldPhase != phase)
+	{
+		oldPhase = phase;
+		int i_phase = phase + 1.0f;
+		std::stringstream ss;
+		ss << "BEAT : " << i_phase;
+		ofxOscMessage t;
+		t.setAddress("/phase");
+		t.addStringArg(ss.str());
+		send.sendMessage(t);
+
 	}
 }
 

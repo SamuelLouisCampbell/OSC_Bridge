@@ -12,6 +12,7 @@ private:
 	float oldTempo = 128.0f;
 	float tempo = 128.0f;
 	float phase = 0.0f;
+	float oldPhase = 0.0f;
 
 };
 
