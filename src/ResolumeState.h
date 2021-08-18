@@ -36,6 +36,7 @@ private:
 	float floatBPM = 0.0f;
 	float contentTargetBPM = 120.0f;
 	bool killContentLayers = false;
+	std::deque<ofxOscMessage> messageQ;
 
 };
 

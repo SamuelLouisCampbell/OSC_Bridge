@@ -50,6 +50,16 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 			ss << "/setcue : detected." << std::endl;
 			terminalEntries.push_back(ss.str());
 		}
+		else
+		{
+			//Some messags are simply passed on
+			//print out what they are for terminal
+			std::stringstream ss;
+			ss << "Passing through this message : " << m.getAddress() << std::endl;
+			terminalEntries.push_back(ss.str());
+			//add them to the msg q
+			messageQ.push_back(m);
+		}
 
 	}
 }
@@ -138,6 +148,13 @@ void ResolumeState::sendOutputMessages(ofxOscSender& send)
 			send.sendMessage(s);
 		}
 		killContent();
+	}
+
+	//send any pass through messages;
+	while (!messageQ.empty())
+	{
+		send.sendMessage(messageQ.front());
+		messageQ.pop_front();
 	}
 }
 
