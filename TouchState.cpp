@@ -27,11 +27,6 @@ void TouchState::sendOutputMessages(ofxOscSender& send)
 	if (oldTempo != tempo)
 	{
 		oldTempo = tempo;
-		////send speed
-		//ofxOscMessage s;
-		//s.setAddress("/composition/speed");
-		//s.addFloatArg(toSendValue);
-		//send.sendMessage(s);
 
 		//send tempo
 		std::stringstream ss;

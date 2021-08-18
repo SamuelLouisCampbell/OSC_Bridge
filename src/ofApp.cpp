@@ -2,13 +2,16 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	//gui
+	gui.setup();
+	ofSetFrameRate(60);
 	//Setup Ableton Link
 	state.link.enable(true);
 	std::cout << "State setup" << std::endl;
-	oscSendRes.setup("127.0.0.1", 8000);
-	oscRecRes.setup(8001);
-	oscSendTouch.setup("127.0.0.1", 7001);
-	oscRecTouch.setup(7000);
+	oscSendRes.setup(IPRes.c_str(), oscSendResPort);
+	oscRecRes.setup(oscRecResPort);
+	oscSendTouch.setup(IPtouch.c_str(), oscSendTouchPort);
+	oscRecTouch.setup(oscRecTouchPort);
 }
 
 //--------------------------------------------------------------
@@ -31,25 +34,36 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	
-	std::stringstream ss; 
+	std::stringstream bridgeString;
+	std::stringstream cuesString;
 	int i_phase = phase + 1.0f;
-	
-	
-	ss << "CONNECTIONS : " << state.link.numPeers()
-		<< std::endl << "BPM  : " << tempo
-		<< std::endl << "PHASE : " << i_phase
-		<< std::endl << "Current Column : " << resState.getCurCol()
-		<< std::endl << "Current Set : " << resState.getCurSet()
-		<< std::endl << "Current Cue : " << resState.getCurCue();
+
 	
 
-	ofSetColor(255, 56, 0);
-	//display rectangles
-	ofDrawRectangle({ 100 + (30.0f * i_phase) , 250.0f }, 20.0f, 20.0f);
-	ofSetColor(0, 255, 128);
-	//draw info
-	ofDrawBitmapString( ss.str(), 100.0f, 100.0f);
+	bridgeString << "ABLETON BRIDGE CONNECTIONS : " << state.link.numPeers()
+		<< std::endl << "CURRENT BPM  : " << tempo
+		<< std::endl << "CURRENT PHASE : " << i_phase;
+	
+	cuesString << "Current Column : " << resState.getCurCol()
+		<< std::endl << "Current Set : " << resState.getCurSet()
+		<< std::endl << "Current Cue : " << resState.getCurCue();
+
+	gui.begin();
+	ImGui::Begin("Bridge");
+	if (ImGui::BeginChild("Bridge"))
+	{
+
+		ImGui::Text(bridgeString.str().c_str());	
+		ImGui::RadioButton("One", i_phase == 1);
+		ImGui::RadioButton("Two", i_phase == 2);
+		ImGui::RadioButton("Three", i_phase == 3);
+		ImGui::RadioButton("Four", i_phase == 4);
+		ImGui::Text(cuesString.str().c_str());
+		ImGui::EndChild();
+	}
+	ImGui::End();
+	gui.end();
+
 }
 
 void ofApp::keyPressed(int key)
