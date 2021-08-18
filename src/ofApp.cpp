@@ -23,7 +23,7 @@ void ofApp::update(){
 
 	//update res state
 	resState.updateTempoSpeedPhase(tempo, phase);
-	resState.updateInputMessages(oscRecTouch);
+	resState.updateInputMessages(oscRecTouch, terminalEntries);
 	resState.sendOutputMessages(oscSendRes);
 	//update touch state
 	touchState.updateTempoSpeedPhase(tempo, phase);
@@ -33,33 +33,50 @@ void ofApp::update(){
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw() {
 	std::stringstream bridgeString;
 	std::stringstream cuesString;
 	int i_phase = phase + 1.0f;
 
-	
+
 
 	bridgeString << "ABLETON BRIDGE CONNECTIONS : " << state.link.numPeers()
 		<< std::endl << "CURRENT BPM  : " << tempo
-		<< std::endl << "CURRENT PHASE : " << i_phase;
-	
-	cuesString << "Current Column : " << resState.getCurCol()
+		<< std::endl << "CURRENT BEAT : " << i_phase;
+
+	cuesString << "Current Col : " << resState.getCurCol()
 		<< std::endl << "Current Set : " << resState.getCurSet()
 		<< std::endl << "Current Cue : " << resState.getCurCue();
 
 	gui.begin();
-	ImGui::Begin("Bridge");
-	if (ImGui::BeginChild("Bridge"))
+	if(ImGui::Begin("Bridge", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
 	{
-
+	ImGui::SetWindowPos({ 0, 0 });
+	ImGui::SetWindowSize({ float(ofGetWindowWidth()), float(ofGetWindowHeight()) });
+	//if (ImGui::BeginChild("Bridge", {0,0}, false, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar))
+	//{
+		
 		ImGui::Text(bridgeString.str().c_str());	
-		ImGui::RadioButton("One", i_phase == 1);
-		ImGui::RadioButton("Two", i_phase == 2);
+		ImGui::RadioButton("One  ", i_phase == 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("Two  ", i_phase == 2);
+		ImGui::RadioButton("Four ", i_phase == 4);
+		ImGui::SameLine();
 		ImGui::RadioButton("Three", i_phase == 3);
-		ImGui::RadioButton("Four", i_phase == 4);
+
+		ImGui::NewLine();
 		ImGui::Text(cuesString.str().c_str());
-		ImGui::EndChild();
+
+		ImGui::NewLine();
+		ImGui::Text("Commands");
+		ImGui::ListBoxHeader("");
+			for(auto& item : terminalEntries)
+			{
+				ImGui::TextColored({1.0f, 0.6f, 0.0f, 1.0f}, item.c_str());
+				ImGui::SetScrollHere();
+			}
+		ImGui::ListBoxFooter();
+		//ImGui::EndChild();
 	}
 	ImGui::End();
 	gui.end();

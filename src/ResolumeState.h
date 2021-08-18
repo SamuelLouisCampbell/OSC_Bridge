@@ -6,7 +6,7 @@
 class ResolumeState
 {
 public:
-	void updateInputMessages(ofxOscReceiver& recv);
+	void updateInputMessages(ofxOscReceiver& recv, std::vector<std::string>& terminalEntries);
 	void sendOutputMessages(ofxOscSender& send);
 	void updateTempoSpeedPhase(const float bpm, const float _phase);
 	const size_t getCurSet();

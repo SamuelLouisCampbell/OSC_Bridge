@@ -1,6 +1,6 @@
 #include "ResolumeState.h"
 
-void ResolumeState::updateInputMessages(ofxOscReceiver& recv)
+void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::string>& terminalEntries)
 {
 	while (recv.hasWaitingMessages())
 	{
@@ -13,22 +13,21 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv)
 		{
 			std::stringstream ss;
 			ss << "/cue/" << m.getArgAsInt(0) << " : detected." << std::endl;
-			std::cout << ss.str();
 			nextCue = m.getArgAsInt(0);
+			terminalEntries.push_back(ss.str());
 		}
 		else if (s == "/set")
 		{
 			std::stringstream ss;
 			ss << "/set/" << m.getArgAsInt(0) << " : detected." << std::endl;
-			std::cout << ss.str();
 			nextSet = m.getArgAsInt(0);
+			terminalEntries.push_back(ss.str());
 		}
 		else if (s == "/go")
 		{
 			std::stringstream ss;
 			ss << "/go : detected." << std::endl;
-			std::cout << ss.str();
-
+			terminalEntries.push_back(ss.str());
 			if (nextCue < nCues)
 			{
 				nextCue++;
@@ -42,8 +41,14 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv)
 		{
 			std::stringstream ss;
 			ss << "/kill : detected." << std::endl;
-			std::cout << ss.str();
 			killContentLayers = true;
+			terminalEntries.push_back(ss.str());
+		}
+		else if (s == "/setcue")
+		{
+			std::stringstream ss;
+			ss << "/setcue : detected." << std::endl;
+			terminalEntries.push_back(ss.str());
 		}
 
 	}

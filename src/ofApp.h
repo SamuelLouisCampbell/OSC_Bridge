@@ -33,6 +33,7 @@ private:
 //Gui stuff
 	ofxImGui::Gui gui;
 	char buffer_a[16] = { 0 };
+	std::vector<std::string> terminalEntries;
 
 //ableton stuff
 	float phase;
