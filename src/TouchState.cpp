@@ -21,7 +21,7 @@ void TouchState::updateInputMessages(ofxOscReceiver& recv)
 
 }
 
-void TouchState::sendOutputMessages(ofxOscSender& send)
+void TouchState::sendOutputMessages(ofxOscSender& send, ResolumeState& rs)
 {
 	//flipflop
 	if (oldTempo != tempo)
@@ -45,7 +45,21 @@ void TouchState::sendOutputMessages(ofxOscSender& send)
 		t.setAddress("/phase");
 		t.addStringArg(ss.str());
 		send.sendMessage(t);
-
+	}
+	if (rs.waitingForGo())
+	{
+		ofxOscMessage t;
+		t.setAddress("/setcue");
+		t.addFloatArg(1.0f);
+		send.sendMessage(t);
+	}
+	else if(rs.getCurCol() != OldResClip)
+	{
+		OldResClip = rs.getCurCol();
+		ofxOscMessage t;
+		t.setAddress("/setcue");
+		t.addFloatArg(0.0f);
+		send.sendMessage(t);
 	}
 }
 

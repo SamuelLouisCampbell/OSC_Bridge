@@ -4,7 +4,7 @@
 #include <Link.hpp>
 #include "ofxOsc.h"
 #include "ResolumeState.h"
-#include "../TouchState.h"
+#include "TouchState.h"
 #include "ofxImGui.h"
 
 

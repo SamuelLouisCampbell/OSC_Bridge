@@ -2,6 +2,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+
+	//OF stuff
 	//gui
 	gui.setup();
 	ofSetFrameRate(60);
@@ -28,7 +30,7 @@ void ofApp::update(){
 	//update touch state
 	touchState.updateTempoSpeedPhase(tempo, phase);
 	touchState.updateInputMessages(oscRecRes);
-	touchState.sendOutputMessages(oscSendTouch);
+	touchState.sendOutputMessages(oscSendTouch, resState);
 
 }
 

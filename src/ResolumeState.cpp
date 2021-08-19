@@ -25,6 +25,7 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 		}
 		else if (s == "/go")
 		{
+			waitForGo = false;
 			std::stringstream ss;
 			ss << "/go : detected." << std::endl;
 			terminalEntries.push_back(ss.str());
@@ -46,6 +47,7 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 		}
 		else if (s == "/setcue")
 		{
+			waitForGo = true;
 			std::stringstream ss;
 			ss << "/setcue : detected." << std::endl;
 			terminalEntries.push_back(ss.str());
@@ -67,7 +69,7 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 void ResolumeState::sendOutputMessages(ofxOscSender& send)
 {
 	//decide which column to launch based on current data.
-	if (phase < 0.0625f)
+	if (phase < 0.0625f && !waitForGo)
 	{
 		if (currentSet != nextSet)
 		{
@@ -193,4 +195,9 @@ const bool ResolumeState::killContent()
 void ResolumeState::setOffset(const int _offset)
 {
 	offset = _offset;
+}
+
+const bool ResolumeState::waitingForGo()
+{
+	return waitForGo;
 }

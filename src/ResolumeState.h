@@ -13,6 +13,7 @@ public:
 	const size_t getCurCue();
 	const size_t getCurCol();
 	void setOffset(const int _offset);
+	const bool waitingForGo();
 
 private:
 	const bool killContent();
@@ -24,7 +25,7 @@ private:
 	size_t nextSet = 1;
 	size_t nextCue = 1;
 					 
-	size_t offset = 7;
+	size_t offset = 10;
 	size_t nCues = 5;
 
 	int numContentLayers = 4;
@@ -37,6 +38,7 @@ private:
 	float contentTargetBPM = 120.0f;
 	bool killContentLayers = false;
 	std::deque<ofxOscMessage> messageQ;
+	bool waitForGo = false;
 
 };
 

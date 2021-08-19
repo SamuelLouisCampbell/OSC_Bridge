@@ -82,7 +82,7 @@
     <ClCompile Include="src\ResolumeState.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="TouchState.cpp">
+    <ClCompile Include="src\TouchState.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -248,7 +248,7 @@
     <ClInclude Include="src\ResolumeState.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="TouchState.h">
+    <ClInclude Include="src\TouchState.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
