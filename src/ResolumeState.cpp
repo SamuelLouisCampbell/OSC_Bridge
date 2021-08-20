@@ -1,5 +1,6 @@
 #include "ResolumeState.h"
 
+
 void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::string>& terminalEntries)
 {
 	while (recv.hasWaitingMessages())
@@ -200,4 +201,9 @@ void ResolumeState::setOffset(const int _offset)
 const bool ResolumeState::waitingForGo()
 {
 	return waitForGo;
+}
+
+void ResolumeState::setTargetBPM(const float target)
+{
+	contentTargetBPM = target;
 }

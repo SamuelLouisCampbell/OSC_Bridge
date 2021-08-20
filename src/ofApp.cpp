@@ -4,6 +4,13 @@
 void ofApp::setup(){
 
 	//OF stuff
+	ofSetWindowTitle("A&B Bridge");
+	
+	//get data from file
+	if (!data.LoadData("defaults.txt"))
+		terminalEntries.emplace_back("FAILED TO LOAD DEFAULTS.TXT\nLOADED DEFAULT VALUES INSTEAD");
+
+
 	//gui
 	gui.setup();
 	ofSetFrameRate(60);
@@ -14,6 +21,7 @@ void ofApp::setup(){
 	oscRecRes.setup(oscRecResPort);
 	oscSendTouch.setup(IPtouch.c_str(), oscSendTouchPort);
 	oscRecTouch.setup(oscRecTouchPort);
+	resState.setTargetBPM(128.0f);
 }
 
 //--------------------------------------------------------------
@@ -31,6 +39,10 @@ void ofApp::update(){
 	touchState.updateTempoSpeedPhase(tempo, phase);
 	touchState.updateInputMessages(oscRecRes);
 	touchState.sendOutputMessages(oscSendTouch, resState);
+
+	//clear terminal entries to prevent memory death
+	if (terminalEntries.size() > 10)
+		terminalEntries.clear();
 
 }
 
@@ -55,30 +67,28 @@ void ofApp::draw() {
 	{
 	ImGui::SetWindowPos({ 0, 0 });
 	ImGui::SetWindowSize({ float(ofGetWindowWidth()), float(ofGetWindowHeight()) });
-	//if (ImGui::BeginChild("Bridge", {0,0}, false, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar))
-	//{
-		
-		ImGui::Text(bridgeString.str().c_str());	
-		ImGui::RadioButton("One  ", i_phase == 1);
-		ImGui::SameLine();
-		ImGui::RadioButton("Two  ", i_phase == 2);
-		ImGui::RadioButton("Four ", i_phase == 4);
-		ImGui::SameLine();
-		ImGui::RadioButton("Three", i_phase == 3);
-
-		ImGui::NewLine();
-		ImGui::Text(cuesString.str().c_str());
-
-		ImGui::NewLine();
-		ImGui::Text("Commands");
-		ImGui::ListBoxHeader("");
-			for(auto& item : terminalEntries)
-			{
-				ImGui::TextColored({1.0f, 0.6f, 0.0f, 1.0f}, item.c_str());
-				ImGui::SetScrollHere();
-			}
-		ImGui::ListBoxFooter();
-		//ImGui::EndChild();
+	
+	ImGui::Text(bridgeString.str().c_str());	
+	ImGui::RadioButton("One  ", i_phase == 1);
+	ImGui::SameLine();
+	ImGui::RadioButton("Two  ", i_phase == 2);
+	ImGui::RadioButton("Four ", i_phase == 4);
+	ImGui::SameLine();
+	ImGui::RadioButton("Three", i_phase == 3);
+	
+	ImGui::NewLine();
+	ImGui::Text(cuesString.str().c_str());
+	
+	ImGui::NewLine();
+	ImGui::Text("Commands");
+	ImGui::ListBoxHeader("", {390, 195});
+		for(auto& item : terminalEntries)
+		{
+			ImGui::TextColored({1.0f, 0.6f, 0.0f, 1.0f}, item.c_str());
+			ImGui::SetScrollHere();
+		}
+	ImGui::ListBoxFooter();
+	
 	}
 	ImGui::End();
 	gui.end();

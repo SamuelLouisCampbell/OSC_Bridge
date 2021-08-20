@@ -6,6 +6,7 @@
 #include "ResolumeState.h"
 #include "TouchState.h"
 #include "ofxImGui.h"
+#include "LoadInitData.h"
 
 
 class ofApp : public ofBaseApp{
@@ -30,9 +31,10 @@ public:
 
 private:
 
+//Load files
+	LoadInitData data;
 //Gui stuff
 	ofxImGui::Gui gui;
-	char buffer_a[16] = { 0 };
 	std::vector<std::string> terminalEntries;
 
 //ableton stuff

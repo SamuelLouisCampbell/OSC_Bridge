@@ -251,8 +251,21 @@
     <ClInclude Include="src\TouchState.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\resource.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\InitData.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadInitData.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="icon.rc" />
+    <ResourceCompile Include="OSC_Bridge.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\Sam Campbell\Desktop\aborange.ico" />
   </ItemGroup>
 </Project>

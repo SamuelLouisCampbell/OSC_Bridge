@@ -14,6 +14,7 @@ public:
 	const size_t getCurCol();
 	void setOffset(const int _offset);
 	const bool waitingForGo();
+	void setTargetBPM(const float target);
 
 private:
 	const bool killContent();
@@ -35,7 +36,7 @@ private:
 	float speed = 0.25f;
 	float toSendValue = 0.0f;
 	float floatBPM = 0.0f;
-	float contentTargetBPM = 120.0f;
+	float contentTargetBPM = 128.0f;
 	bool killContentLayers = false;
 	std::deque<ofxOscMessage> messageQ;
 	bool waitForGo = false;
