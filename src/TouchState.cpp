@@ -35,7 +35,7 @@ void TouchState::sendOutputMessages(ofxOscSender& send, ResolumeState& rs)
 		t.addStringArg(ss.str());
 		send.sendMessage(t);
 	}
-	if (oldPhase != phase)
+	if (int(oldPhase) != int(phase))
 	{
 		oldPhase = phase;
 		int i_phase = phase + 1.0f;
