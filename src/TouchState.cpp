@@ -53,6 +53,7 @@ void TouchState::sendOutputMessages(ofxOscSender& send, ResolumeState& rs)
 		t.setAddress("/setcue");
 		t.addFloatArg(1.0f);
 		send.sendMessage(t);
+
 	}
 	else
 	{
@@ -62,9 +63,8 @@ void TouchState::sendOutputMessages(ofxOscSender& send, ResolumeState& rs)
 		t.addFloatArg(0.0f);
 		send.sendMessage(t);
 	}
-	
-	
-	if(rs.getCurCol() != OldResClip)
+
+	if (rs.getCurCol() != OldResClip)
 	{
 		OldResClip = rs.getCurCol();
 		ofxOscMessage t;

@@ -11,5 +11,6 @@ struct InitData
 	int oscSendTouchPort;
 	int oscRecTouchPort;
 	float contentTargetBPM;
+	int clipOffset;
 	std::vector<size_t> killCommands;
 };

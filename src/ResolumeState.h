@@ -16,6 +16,7 @@ public:
 	void setOffset(const int _offset);
 	const bool waitingForGo();
 	void setTargetBPM(const float target);
+	
 
 private:
 	const bool killContent();
@@ -42,7 +43,7 @@ private:
 	std::vector<size_t> killLayers;
 	std::deque<ofxOscMessage> messageQ;
 	bool waitForGo = false;
-	bool waitLatch = false;
+	size_t setCueCount = 0;
 
 };
 

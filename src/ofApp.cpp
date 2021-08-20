@@ -23,6 +23,7 @@ void ofApp::setup(){
 	oscSendTouch.setup(data.getData().IPtouch.c_str(), data.getData().oscSendTouchPort);
 	oscRecTouch.setup(data.getData().oscRecTouchPort);
 	resState.setTargetBPM(data.getData().contentTargetBPM);
+	resState.setOffset(data.getData().clipOffset);
 	for (auto& layer : data.getData().killCommands)
 	{
 		resState.AddKillLayer(layer);
@@ -34,7 +35,7 @@ void ofApp::setup(){
 	ss << "Resolume IP   : " << data.getData().IPRes.c_str() << "\nOSC Pad IP    : " << data.getData().IPtouch
 		<< "\nTo Res port   : " << data.getData().oscSendResPort << "\nFrom Res port : " << data.getData().oscRecResPort
 		<< "\nTo Pad port   : " << data.getData().oscSendTouchPort << "\nFrom Pad port : " << data.getData().oscRecTouchPort
-		<< "\nContent BPM   : " << data.getData().contentTargetBPM
+		<< "\nContent BPM   : " << data.getData().contentTargetBPM << "\nClip Offset   : " << data.getData().clipOffset
 		<< "\nKill Layers   : ";
 	for (auto& layer : data.getData().killCommands)
 	{

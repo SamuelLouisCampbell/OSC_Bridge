@@ -49,6 +49,11 @@ public:
 			n = line.find("#");
 			substr = line.substr(n + 1, line.size());
 			data.contentTargetBPM = std::stof(substr);
+			//Clip offset
+			std::getline(defFile, line);
+			n = line.find("#");
+			substr = line.substr(n + 1, line.size());
+			data.clipOffset = std::stoi(substr);
 			//Which Layers to Kill?
 			std::getline(defFile, line);
 			n = line.find("#");

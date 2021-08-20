@@ -27,6 +27,7 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 		else if (s == "/go")
 		{
 			waitForGo = false;
+			setCueCount = 0;
 			std::stringstream ss;
 			ss << "/go : detected." << std::endl;
 			terminalEntries.push_back(ss.str());
@@ -42,6 +43,7 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 		else if (s == "/kill")
 		{
 			waitForGo = false;
+			setCueCount = 0;
 			std::stringstream ss;
 			ss << "/kill : detected." << std::endl;
 			killContentLayers = true;
@@ -49,14 +51,22 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 		}
 		else if (s == "/setcue")
 		{
-			if (waitLatch == false)
+			std::stringstream ss;
+			if (setCueCount >= 1)
+			{
+				waitForGo = false;
+				setCueCount = 0;
+				ss << "/setcue : cancelled." << std::endl;
+				terminalEntries.push_back(ss.str());
+			}
+			else
 			{
 				waitForGo = true;
-				waitLatch = true;
+				setCueCount++;
+				ss << "/setcue : detected." << std::endl;
+				terminalEntries.push_back(ss.str());
 			}
-			std::stringstream ss;
-			ss << "/setcue : detected." << std::endl;
-			terminalEntries.push_back(ss.str());
+			
 		}
 		else
 		{
@@ -217,3 +227,4 @@ void ResolumeState::setTargetBPM(const float target)
 {
 	contentTargetBPM = target;
 }
+
