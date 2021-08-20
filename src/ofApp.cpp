@@ -23,18 +23,25 @@ void ofApp::setup(){
 	oscSendTouch.setup(data.getData().IPtouch.c_str(), data.getData().oscSendTouchPort);
 	oscRecTouch.setup(data.getData().oscRecTouchPort);
 	resState.setTargetBPM(data.getData().contentTargetBPM);
+	for (auto& layer : data.getData().killCommands)
+	{
+		resState.AddKillLayer(layer);
+	}
 
-	resState.AddKillLayer(1);
-	resState.AddKillLayer(3);
-	resState.AddKillLayer(4);
-	
 	
 	//Print that to user.
 	std::stringstream ss;
-	ss <<    "Resolume IP   : " << data.getData().IPRes.c_str() <<  "\nOSC Pad IP    : " << data.getData().IPtouch
+	ss << "Resolume IP   : " << data.getData().IPRes.c_str() << "\nOSC Pad IP    : " << data.getData().IPtouch
 		<< "\nTo Res port   : " << data.getData().oscSendResPort << "\nFrom Res port : " << data.getData().oscRecResPort
 		<< "\nTo Pad port   : " << data.getData().oscSendTouchPort << "\nFrom Pad port : " << data.getData().oscRecTouchPort
-		<< "\nContent BPM   : " << data.getData().contentTargetBPM << std::endl;
+		<< "\nContent BPM   : " << data.getData().contentTargetBPM
+		<< "\nKill Layers   : ";
+	for (auto& layer : data.getData().killCommands)
+	{
+		ss << layer << " ";
+	}
+	ss << std::endl;
+
 	terminalEntries.emplace_back(ss.str());
 }
 

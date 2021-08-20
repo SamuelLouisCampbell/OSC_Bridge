@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 struct InitData
 {
@@ -10,4 +11,5 @@ struct InitData
 	int oscSendTouchPort;
 	int oscRecTouchPort;
 	float contentTargetBPM;
+	std::vector<size_t> killCommands;
 };

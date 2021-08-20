@@ -49,6 +49,17 @@ public:
 			n = line.find("#");
 			substr = line.substr(n + 1, line.size());
 			data.contentTargetBPM = std::stof(substr);
+			//Which Layers to Kill?
+			std::getline(defFile, line);
+			n = line.find("#");
+			substr = line.substr(n + 1, line.size());
+			std::stringstream ss;
+			ss << substr;
+			std::string killNum;
+			while (std::getline(ss, killNum, ','))
+			{
+				data.killCommands.push_back(std::stoi(killNum));
+			}
 			
 			//close out
 			defFile.close();
