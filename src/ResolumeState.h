@@ -9,6 +9,7 @@ public:
 	void updateInputMessages(ofxOscReceiver& recv, std::vector<std::string>& terminalEntries);
 	void sendOutputMessages(ofxOscSender& send);
 	void updateTempoSpeedPhase(const float bpm, const float _phase);
+	void AddKillLayer(const size_t layerNo);
 	const size_t getCurSet();
 	const size_t getCurCue();
 	const size_t getCurCol();
@@ -29,7 +30,7 @@ private:
 	size_t offset = 10;
 	size_t nCues = 5;
 
-	int numContentLayers = 4;
+
 	float oldTempo = 128.0f;
 	float tempo = 128.0f;
 	float phase = 0.0f;
@@ -38,8 +39,10 @@ private:
 	float floatBPM = 0.0f;
 	float contentTargetBPM = 128.0f;
 	bool killContentLayers = false;
+	std::vector<size_t> killLayers;
 	std::deque<ofxOscMessage> messageQ;
 	bool waitForGo = false;
+	bool waitLatch = false;
 
 };
 

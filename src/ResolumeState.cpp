@@ -41,6 +41,7 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 		}
 		else if (s == "/kill")
 		{
+			waitForGo = false;
 			std::stringstream ss;
 			ss << "/kill : detected." << std::endl;
 			killContentLayers = true;
@@ -48,7 +49,11 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 		}
 		else if (s == "/setcue")
 		{
-			waitForGo = true;
+			if (waitLatch == false)
+			{
+				waitForGo = true;
+				waitLatch = true;
+			}
 			std::stringstream ss;
 			ss << "/setcue : detected." << std::endl;
 			terminalEntries.push_back(ss.str());
@@ -132,19 +137,19 @@ void ResolumeState::sendOutputMessages(ofxOscSender& send)
 
 	if (killContentLayers)
 	{
-		for(int i = 1; i <= numContentLayers; i++)
+		for(int i = 0; i < killLayers.size(); i++)
 		{
 			std::stringstream ss; 
-			ss << "/composition/layers/" << i << "/clear";
+			ss << "/composition/layers/" << killLayers[i] << "/clear";
 			ofxOscMessage s;
 			s.setAddress(ss.str());
 			s.addIntArg(1);
 			send.sendMessage(s);
 		}
-		for (int i = 1; i <= numContentLayers; i++)
+		for (int i = 0; i < killLayers.size(); i++)
 		{
 			std::stringstream ss;
-			ss << "/composition/layers/" << i << "/clear";
+			ss << "/composition/layers/" << killLayers[i] << "/clear";
 			ofxOscMessage s;
 			s.setAddress(ss.str());
 			s.addIntArg(0);
@@ -169,6 +174,11 @@ void ResolumeState::updateTempoSpeedPhase(const float bpm, const float _phase)
 	float convertMe = ofMap(tempo, contentTargetBPM / 2.0f, contentTargetBPM * 2.0f, 0.05f, 0.2f);
 	floatBPM = ofMap(tempo, 20.0f, 500.0f, 0.0f, 1.0f);
 	toSendValue = std::pow(convertMe, 1.0f / 1.6609640474437f);
+}
+
+void ResolumeState::AddKillLayer(const size_t layerNo)
+{
+	killLayers.push_back(layerNo);
 }
 
 const size_t ResolumeState::getCurSet()

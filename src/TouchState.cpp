@@ -46,6 +46,7 @@ void TouchState::sendOutputMessages(ofxOscSender& send, ResolumeState& rs)
 		t.addStringArg(ss.str());
 		send.sendMessage(t);
 	}
+
 	if (rs.waitingForGo())
 	{
 		ofxOscMessage t;
@@ -53,7 +54,17 @@ void TouchState::sendOutputMessages(ofxOscSender& send, ResolumeState& rs)
 		t.addFloatArg(1.0f);
 		send.sendMessage(t);
 	}
-	else if(rs.getCurCol() != OldResClip)
+	else
+	{
+		//TODO fix this so it doesn't send an instruction each frame.
+		ofxOscMessage t;
+		t.setAddress("/setcue");
+		t.addFloatArg(0.0f);
+		send.sendMessage(t);
+	}
+	
+	
+	if(rs.getCurCol() != OldResClip)
 	{
 		OldResClip = rs.getCurCol();
 		ofxOscMessage t;

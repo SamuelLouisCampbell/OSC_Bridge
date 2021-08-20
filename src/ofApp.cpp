@@ -16,12 +16,26 @@ void ofApp::setup(){
 	ofSetFrameRate(60);
 	//Setup Ableton Link
 	state.link.enable(true);
-	std::cout << "State setup" << std::endl;
-	oscSendRes.setup(IPRes.c_str(), oscSendResPort);
-	oscRecRes.setup(oscRecResPort);
-	oscSendTouch.setup(IPtouch.c_str(), oscSendTouchPort);
-	oscRecTouch.setup(oscRecTouchPort);
-	resState.setTargetBPM(128.0f);
+	
+	//Use loaded or default data to launch all of the things
+	oscSendRes.setup(data.getData().IPRes.c_str(), data.getData().oscSendResPort);
+	oscRecRes.setup(data.getData().oscRecResPort);
+	oscSendTouch.setup(data.getData().IPtouch.c_str(), data.getData().oscSendTouchPort);
+	oscRecTouch.setup(data.getData().oscRecTouchPort);
+	resState.setTargetBPM(data.getData().contentTargetBPM);
+
+	resState.AddKillLayer(1);
+	resState.AddKillLayer(3);
+	resState.AddKillLayer(4);
+	
+	
+	//Print that to user.
+	std::stringstream ss;
+	ss <<    "Resolume IP   : " << data.getData().IPRes.c_str() <<  "\nOSC Pad IP    : " << data.getData().IPtouch
+		<< "\nTo Res port   : " << data.getData().oscSendResPort << "\nFrom Res port : " << data.getData().oscRecResPort
+		<< "\nTo Pad port   : " << data.getData().oscSendTouchPort << "\nFrom Pad port : " << data.getData().oscRecTouchPort
+		<< "\nContent BPM   : " << data.getData().contentTargetBPM << std::endl;
+	terminalEntries.emplace_back(ss.str());
 }
 
 //--------------------------------------------------------------
@@ -40,8 +54,8 @@ void ofApp::update(){
 	touchState.updateInputMessages(oscRecRes);
 	touchState.sendOutputMessages(oscSendTouch, resState);
 
-	//clear terminal entries to prevent memory death
-	if (terminalEntries.size() > 10)
+	//clear terminal entries to prevent memory leak
+	if (terminalEntries.size() > 1024)
 		terminalEntries.clear();
 
 }
