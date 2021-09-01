@@ -85,7 +85,7 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 void ResolumeState::sendOutputMessages(ofxOscSender& send)
 {
 	//decide which column to launch based on current data.
-	if (phase < 0.0625f && !waitForGo)
+	if (!waitForGo)
 	{
 		if (currentSet != nextSet)
 		{
