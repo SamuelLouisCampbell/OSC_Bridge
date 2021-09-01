@@ -10,7 +10,7 @@ extern "C"
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 	ofGLFWWindowSettings settings;
-	settings.setSize(420, 380);
+	settings.setSize(420, 400);
 	settings.resizable = false;
 	ofCreateWindow(settings);
 

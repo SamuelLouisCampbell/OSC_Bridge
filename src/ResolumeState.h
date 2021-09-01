@@ -16,14 +16,15 @@ public:
 	void setOffset(const int _offset);
 	const bool waitingForGo();
 	void setTargetBPM(const float target);
+	void setPreviewLayer(const size_t lay);
 	
 
 private:
 	const bool killContent();
 private:
-	size_t currentSet = 1;
-	size_t currentCue = 1;
-	size_t currentCol = 1;
+	size_t currentSet = 0;
+	size_t currentCue = 0;
+	size_t currentCol = 0;
 
 	size_t nextSet = 1;
 	size_t nextCue = 1;
@@ -31,6 +32,9 @@ private:
 	size_t offset = 10;
 	size_t nCues = 5;
 
+	size_t previewLayer = 3;
+	size_t oldPreview = 0;
+	size_t currentPreview = 0;
 
 	float oldTempo = 128.0f;
 	float tempo = 128.0f;

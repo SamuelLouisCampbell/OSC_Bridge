@@ -2,6 +2,7 @@
 #define LINK_PLATFORM_WINDOWS
 #include "ofMain.h"
 #include <Link.hpp>
+#include <algorithm>
 #include "ofxOsc.h"
 #include "ResolumeState.h"
 #include "TouchState.h"
@@ -30,7 +31,11 @@ public:
 
 
 private:
-
+	//utlity
+	template <typename T>
+	T clip(const T& n, const T& lower, const T& upper) {
+		return std::max(lower, std::min(n, upper));
+	}
 //Load files
 	LoadInitData data;
 //Gui stuff
@@ -43,6 +48,7 @@ private:
 
 //res stuff
 	ResolumeState resState;
+	int previewLayer = 3;
 
 //touch OSC stuff
 	TouchState touchState;

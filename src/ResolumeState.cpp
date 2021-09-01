@@ -23,6 +23,14 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 			ss << "/set/" << m.getArgAsInt(0) << " : detected." << std::endl;
 			nextSet = m.getArgAsInt(0);
 			terminalEntries.push_back(ss.str());
+
+			//setup previews
+			if (nextSet >= 1)
+				currentPreview = ((nextSet * offset) - offset) + 1;
+			else
+				currentPreview = 1;
+
+
 		}
 		else if (s == "/go")
 		{
@@ -84,6 +92,20 @@ void ResolumeState::updateInputMessages(ofxOscReceiver& recv, std::vector<std::s
 
 void ResolumeState::sendOutputMessages(ofxOscSender& send)
 {
+	//do previews
+	if (currentPreview != oldPreview)
+	{
+		oldPreview = currentPreview;
+		//send that to RES
+		std::stringstream ss;
+		ss << "/composition/layers/" << previewLayer << "/clips/" << currentPreview << "/select";
+		ofxOscMessage m;
+		m.setAddress(ss.str());
+		m.addFloatArg(1.0f);
+		send.sendMessage(m);
+
+	}
+
 	//decide which column to launch based on current data.
 	if (!waitForGo)
 	{
@@ -107,7 +129,6 @@ void ResolumeState::sendOutputMessages(ofxOscSender& send)
 			m.setAddress(ss.str());
 			m.addFloatArg(1.0f);
 			send.sendMessage(m);
-			std::cout << ss.str() << std::endl;
 		}
 		if (currentCue != nextCue)
 		{
@@ -123,8 +144,6 @@ void ResolumeState::sendOutputMessages(ofxOscSender& send)
 			m.setAddress(ss.str());
 			m.addFloatArg(1.0f);
 			send.sendMessage(m);
-			std::cout << ss.str() << std::endl;
-
 		}
 	}
 
@@ -226,5 +245,10 @@ const bool ResolumeState::waitingForGo()
 void ResolumeState::setTargetBPM(const float target)
 {
 	contentTargetBPM = target;
+}
+
+void ResolumeState::setPreviewLayer(const size_t lay)
+{
+	previewLayer = lay;
 }
 

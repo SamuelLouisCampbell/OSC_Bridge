@@ -90,6 +90,8 @@ void ofApp::draw() {
 	ImGui::SetWindowPos({ 0, 0 });
 	ImGui::SetWindowSize({ float(ofGetWindowWidth()), float(ofGetWindowHeight()) });
 	
+	if (ImGui::InputInt("Preview Layer?", &previewLayer))
+		resState.setPreviewLayer(clip(previewLayer, 1, 30));
 	ImGui::Text(bridgeString.str().c_str());	
 	ImGui::RadioButton("One  ", i_phase == 1);
 	ImGui::SameLine();
